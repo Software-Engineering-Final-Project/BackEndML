@@ -4,7 +4,7 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
 
-ds = pd.read_csv("C:\\Users\\sachin mahashabde\\desktop\\python\\testData.csv")
+ds = pd.read_csv("C:\\Users\\Sachin Mahashabde\\Documents\\new project\\BackEndML\\Python\\testData.csv")
 
 tf = TfidfVectorizer(analyzer='word', ngram_range=(1, 3), min_df=0, stop_words='english')
 tfidf_matrix = tf.fit_transform(ds['description'])
@@ -25,19 +25,21 @@ print('done!')
 def item(id):
     return ds.loc[ds['id'] == id]['description'].tolist()[0].split(' - ')[0]
 
-
+f = open("returnResults.csv", "w")
 # Just reads the results out of the dictionary.
 def recommend(item_id, num):
-    print("-------")
-    print("Recommending " + str(num) + " articles similar to " + item(item_id) + "...")
-    print("-------")
+    #print("-------")
+    f.write("\n")
+    f.write(str(item_id) + ", ")
+    #print("-------")
     recs = results[item_id][:num]
     for rec in recs:
-        print("Recommended: " + item(rec[1]) + " (score:" + str(rec[0]) + ")")
+        f.write(str(rec[1]) + ", ")
 
 
 i = 1
 while i < 20:
-    recommend(item_id=i, num=2)
+    (recommend(item_id=i, num=3))
     i += 1
+f.close()
 #recommend(item_id=3, num=3)
