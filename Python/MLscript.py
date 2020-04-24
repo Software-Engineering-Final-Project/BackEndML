@@ -27,14 +27,21 @@ def item(id):
 
 f = open("returnResults.csv", "w")
 # Just reads the results out of the dictionary.
+
 def recommend(item_id, num):
     #print("-------")
     f.write("\n")
     f.write(str(item_id) + ", ")
     #print("-------")
     recs = results[item_id][:num]
+
+    i = 0
     for rec in recs:
-        f.write(str(rec[1]) + ", ")
+        op = "," if i < 2 else ""
+        f.write(str(rec[1]) + op)
+        print(i)
+        i = i + 1 if i < 2 else 0
+
 
 
 i = 1
