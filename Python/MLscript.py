@@ -22,6 +22,7 @@ for idx, row in ds.iterrows():
 print('done!')
 
 
+
 def item(id):
     return ds.loc[ds['id'] == id]['description'].tolist()[0].split(' - ')[0]
 
