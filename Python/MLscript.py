@@ -38,7 +38,7 @@ def recommend(item_id, num):
 
 
 i = 1
-while i < 20:
+while i < 452:
     (recommend(item_id=i, num=3))
     i += 1
 f.close()

@@ -43,19 +43,31 @@ public class ThreadPooling {
         try {
             pool.awaitTermination(10, TimeUnit.DAYS);
             dataList1.addAll(dataList2);
-
+            ArrayList<Data> cleaned_sql_list = new ArrayList<>();
             // Clean Data
-            ArrayList<Data> cleaned_list = DataCleaner.cleanData(dataList1);
-            HashSet<Data> dataSet = new HashSet<>();
-            dataSet.addAll(cleaned_list);
+            cleaned_sql_list = DataCleaner.cleanData2(dataList1);
+
+
+
+            HashSet<Data> sqlSet = new HashSet<>();
+
+            sqlSet.addAll(cleaned_sql_list);
 
             // Write to csv
             PrintWriter writer1 = new PrintWriter("src/main/java/allData.txt");
             PrintWriter writer2 = new PrintWriter("src/main/java/selectedData.txt");
+            PrintWriter sqlWriter = new PrintWriter("src/main/java/articles.sql");
+            writeToSQL(sqlWriter, sqlSet);
+            sqlWriter.close();
+            ArrayList<Data> cleaned_list = DataCleaner.cleanData(dataList1);
+            HashSet<Data> dataSet = new HashSet<>();
+            dataSet.addAll(cleaned_list);
             writeToCSVS(writer1, dataSet, writer2);
+
             System.out.println("Finished writing to CSV file");
             writer1.close();
             writer2.close();
+
 
 
         } catch (Exception e) {
@@ -64,8 +76,35 @@ public class ThreadPooling {
         }
     }
 
+    private static void writeToSQL(PrintWriter writer, HashSet<Data> dataSet){
+        int data_id = 1;
+        writer.println("INSERT into article (id_article, title, desc, author, fk_category_id) values ");
+            for (Data data : dataSet){
+                writer.println("(" +  data_id + ", " +  "\"" + data.getTitle() + "\"" + ", " +  "\"" + data.getDescription() + "\"" + ", " +
+                                "\"" + data.getAuthor() + "\"" + ", " +  getSourceID(data.getSourceName())  + ")" +
+                        (data_id == dataSet.size() ? ";" : ","));
+                data_id += 1;
+            }
 
-
+    }
+    private static int getSourceID(String source){
+        switch (source) {
+            case "IEEE": return 3;
+            case "Forbes": return 4;
+            case "NIH": return 5;
+            case "Google News": return 6;
+            case "The New Yorker": return 7;
+            case "WebMD" : return 8;
+            case "ABC News": return 9;
+            case "USA Today": return 10;
+            case "Psychology Today":return 11;
+            case "CNN": return 1;
+            case "TED" : return 12;
+            case "Science": return 13;
+            case "Scientific American": return 14;
+            default: return 2;
+        }
+        }
     private static void writeToCSVS(PrintWriter writer, HashSet<Data> dataSet, PrintWriter writer2) {
         int line_num = 1;
         for(Data data : dataSet) {
@@ -74,7 +113,7 @@ public class ThreadPooling {
 
             //writer2.println(line_num + ", " + data.getSourceName());
 
-            writer.println(line_num + ", \"" + data.getTitle() + " - " + data.getDescription() + "\"" + ", " + data.getSourceName());
+            writer2.println(line_num + ", \"" + data.getTitle() + " - " + data.getDescription() + "\"");
             line_num++;
         }
     }

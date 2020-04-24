@@ -13,6 +13,16 @@ public class DataCleaner {
         return dataList;
     }
 
+    public static ArrayList<Data> cleanData2(ArrayList<Data> dataList){
+        for(int i = 0; i < dataList.size(); i++){
+            Data data = dataList.get(i);
+            updateCategory(data);
+            formatDataFields2(data);
+        }
+
+        return dataList;
+    }
+
     private static void updateCategory(Data data) {
         switch (data.getSource().getName()) {
             case "Ieee.org": data.setSourceName("IEEE"); break;
@@ -41,6 +51,14 @@ public class DataCleaner {
         data.setUrl(formatField(data.getUrl()));
     }
 
+    private static void formatDataFields2(Data data) {
+        data.setTitle(formatField2(data.getTitle()));
+        data.setAuthor(formatField2(data.getAuthor()));
+        data.setDescription(formatField2(data.getDescription()));
+        data.setPublishedAt(formatField2(data.getPublishedAt()));
+        data.setUrl(formatField2(data.getUrl()));
+    }
+
 
     private static String formatField (String description) {
         if(description == null) return "NULL";
@@ -50,6 +68,17 @@ public class DataCleaner {
                     .replaceAll("\r", " ")
                     .replace("\"", "\\\"")
                     .replace(",", "\\");
+        }
+    }
+
+    private static String formatField2 (String description) {
+        if(description == null) return "NULL";
+        else {
+            return description.replaceAll("\r\n", " ")
+                    .replaceAll("\n", " ")
+                    .replaceAll("\r", " ")
+                    .replace("\"", "\\\"");
+
         }
     }
 }
