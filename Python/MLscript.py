@@ -22,18 +22,20 @@ for idx, row in ds.iterrows():
 print('done!')
 
 
-
 def item(id):
     return ds.loc[ds['id'] == id]['description'].tolist()[0].split(' - ')[0]
 
+
 f = open("returnResults.csv", "w")
+
+
 # Just reads the results out of the dictionary.
 
 def recommend(item_id, num):
-    #print("-------")
+    # print("-------")
     f.write("\n")
     f.write(str(item_id) + ", ")
-    #print("-------")
+    # print("-------")
     recs = results[item_id][:num]
 
     i = 0
@@ -44,10 +46,9 @@ def recommend(item_id, num):
         i = i + 1 if i < 2 else 0
 
 
-
 i = 1
-while i < 452:
+while i < 465:
     (recommend(item_id=i, num=3))
     i += 1
 f.close()
-#recommend(item_id=3, num=3)
+# recommend(item_id=3, num=3)

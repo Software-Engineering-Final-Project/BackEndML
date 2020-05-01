@@ -78,7 +78,7 @@ public class ThreadPooling {
 
     private static void writeToSQL(PrintWriter writer, HashSet<Data> dataSet){
         int data_id = 1;
-        writer.println("INSERT into article (id_article, title, desc, author, fk_category_id) values ");
+        writer.println("INSERT into article (id_article, title, descrip, author, fk_category_id) values ");
             for (Data data : dataSet){
                 writer.println("(" +  data_id + ", " +  "\"" + data.getTitle() + "\"" + ", " +  "\"" + data.getDescription() + "\"" + ", " +
                                 "\"" + data.getAuthor() + "\"" + ", " +  getSourceID(data.getSourceName())  + ")" +
